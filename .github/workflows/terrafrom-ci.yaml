@@ -48,5 +48,5 @@ jobs:
               tflint_version: latest
 
            - name: Run TFLint
-             run: tflint --recursive --format=compacr   
+             run: tflint --recursive --format=compact  
 
