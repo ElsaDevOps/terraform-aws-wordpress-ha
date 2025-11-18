@@ -28,8 +28,3 @@ variable "availability_zones" {
 }
 
 
-variable "region" {
-  type        = string
-  description = "Aws region"
-  default     = "eu-west-2"
-}
