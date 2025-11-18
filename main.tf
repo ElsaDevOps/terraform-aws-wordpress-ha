@@ -24,7 +24,9 @@
 # Creating Custom VPC
 
 module "vpc"{
-  source = "./modules/main"
+  source = "./modules/vpc"
+
+  region = var.region
 }
 
 # # Security groups

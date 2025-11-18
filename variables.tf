@@ -33,11 +33,11 @@ variable "cidr_public_subnet_web" {
 #     default = "ami-075599e9cc6e3190d"
 # }
 
-# variable "region"{
-#     type = string
-#     description = "Aws region"
-#     default = "eu-west-1"
-# }
+variable "region"{
+    type = string
+    description = "Aws region"
+    default = "eu-west-2"
+}
 
 variable "availability_zones" {
   type        = list(string)
