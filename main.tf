@@ -1,3 +1,10 @@
+# VPC Module
+module "vpc"{
+  source = "./modules/vpc"
+
+  region = var.region
+  }
+
 # EC2 instances for Wordpress
 
 # resource "aws_instance" "wordpress_instance" {
@@ -13,7 +20,7 @@
 
 # resource "aws_instance" "wordpress_instance_2" {
 #   ami                     = "ami-075599e9cc6e3190d"
-#   instance_type           = "var.instance_type
+#   instance_type           = "var.instance_type"
 #   subnet_id = aws_subnet.private_subnet_app.id
 #   region = var.region
 #   availability_zone = each.value
@@ -21,13 +28,6 @@
 
 # }
 
-# Creating Custom VPC
-
-module "vpc"{
-  source = "./modules/vpc"
-
-  region = var.region
-}
 
 # # Security groups
 
@@ -126,7 +126,7 @@ module "vpc"{
 #   }
 # }
 
-# # Listener, targe group
+# # Listener, target group
 
 # resource "aws_lb_target_group" "front_end" {
 #   name     = "tf-example-lb-tg"
@@ -147,3 +147,6 @@ module "vpc"{
 #     target_group_arn = aws_lb_target_group.front_end.arn
 #   }
 # }
+
+
+# Auto scaling groups
