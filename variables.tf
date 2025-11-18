@@ -21,22 +21,22 @@ variable "cidr_public_subnet_web" {
   default     = ["10.0.0.0/24", "10.0.1.0/24"]
 }
 
-variable "instance_type"{
-    type = string
-    description = "instance type"
-    default = "t2.micro"
+variable "instance_type" {
+  type        = string
+  description = "instance type"
+  default     = "t2.micro"
 }
 
-variable "instance_ami"{
-    type = string
-    description = "ami"
-    default = "ami-075599e9cc6e3190d"
+variable "instance_ami" {
+  type        = string
+  description = "ami"
+  default     = "ami-075599e9cc6e3190d"
 }
 
-variable "region"{
-    type = string
-    description = "Aws region"
-    default = "eu-west-2"
+variable "region" {
+  type        = string
+  description = "Aws region"
+  default     = "eu-west-2"
 }
 
 variable "availability_zones" {
