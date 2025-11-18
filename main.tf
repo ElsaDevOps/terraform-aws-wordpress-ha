@@ -2,7 +2,7 @@
 module "vpc" {
   source = "./modules/vpc"
 
-  region = var.region
+  
 }
 
 # EC2 instances for Wordpress
