@@ -2,7 +2,7 @@
 module "vpc" {
   source = "./modules/vpc"
 
-  
+
 }
 
 # EC2 instances for Wordpress
