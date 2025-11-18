@@ -9,8 +9,8 @@ output "vpc_cidr_block" {
 }
 
 output "private_subnet_id_app" {
- description = "Map of private app tier subnet IDs, keyed by AZ's"
-  value       = {
+  description = "Map of private app tier subnet IDs, keyed by AZ's"
+  value = {
     for az, subnet in aws_subnet.private_subnet_app : az => subnet.id
   }
 }
@@ -18,14 +18,14 @@ output "private_subnet_id_app" {
 
 output "private_subnet_id_data" {
   description = "Map of private data tier subnet IDs, keyed by AZ's"
-  value       = {
+  value = {
     for az, subnet in aws_subnet.private_subnet_data : az => subnet.id
   }
 }
 
 output "public_subnet_id_web" {
   description = "Map of public web tier subnet IDs, keyed by AZ's"
-  value       = {
+  value = {
     for az, subnet in aws_subnet.public_subnet : az => subnet.id
   }
 }
