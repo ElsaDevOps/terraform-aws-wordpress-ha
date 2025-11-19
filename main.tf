@@ -150,3 +150,62 @@ module "vpc" {
 
 
 # Auto scaling groups
+
+resource "aws_vpc" "my_vpc" {
+  cidr_block           = var.cidr_blockvpc
+  instance_tenancy     = "default"
+  enable_dns_hostnames = true
+  tags = {
+    Name = "my_vpc"
+  }
+}
+
+
+# # Create Public and Private Subnets
+
+# Public subnet web tier
+
+resource "aws_subnet" "public_subnet" {
+  for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_public_subnet_web[i] }
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = each.value
+  availability_zone       = each.key
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "Public subnet web"
+  }
+}
+
+
+
+
+# private subnet app tier
+
+resource "aws_subnet" "private_subnet_app" {
+  for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_private_subnet_app[i] }
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = each.value
+  availability_zone       = each.key
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "Private subnet app"
+  }
+}
+
+
+
+#private subnet data tier
+
+resource "aws_subnet" "private_subnet_data" {
+  for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_private_subnet_data[i] }
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = each.value
+  availability_zone       = each.key
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "Private subnet data"
+  }
+}
