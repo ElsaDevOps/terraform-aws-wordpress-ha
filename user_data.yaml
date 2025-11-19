@@ -1,0 +1,42 @@
+#cloud-config
+# This header is MANDATORY. It tells Cloud-Init to parse this file as a config.
+
+# 1. Package Management:
+#    Declare the list of packages you want installed. Cloud-Init will use 'dnf'
+#    automatically because it knows it's on Amazon Linux.
+package_update: true
+packages:
+  - httpd
+  - php
+  - php-mysqlnd
+  - php-fpm
+  - php-gd
+  - amazon-efs-utils
+
+# 2. File System Configuration:
+#    We will write the /etc/fstab entry to make the EFS mount persistent.
+write_files:
+  - path: /etc/fstab
+    # CRITICAL: 'append: true' ensures we ADD to the file, not overwrite it.
+    # Overwriting fstab would break the server's boot process.
+    append: true
+    content: |
+      # Mount EFS for WordPress content
+      ${efs_id}:/ /var/www/html efs _netdev,tls 0 0
+
+# 3. Commands to Run:
+#    This is for imperative steps that don't fit into other modules.
+#    These commands are run after the packages are installed and files are written.
+runcmd:
+  # Create the mount point for EFS. '-p' means create parent dirs if they don't exist.
+  - [ mkdir, -p, /var/www/html ]
+  # Tell the system to mount everything listed in /etc/fstab. This will mount our new EFS share.
+  - [ mount, -a ]
+  # Enable and start the web server.
+  - [ systemctl, enable, httpd ]
+  - [ systemctl, start, httpd ]
+  # Create a test file to verify everything is working.
+  - [ sh, -c, 'echo "<h1>Success: WordPress instance launched via Cloud-Init!</h1><p>EFS is mounted.</p>" > /var/www/html/index.html' ]
+
+# Note: There is a 'services' module, but for enabling and starting, 'runcmd' is often more direct and explicit.
+# Debugging Tip: Cloud-Init logs its progress in /var/log/cloud-init.log and /var/log/cloud-init-output.log on the instance.

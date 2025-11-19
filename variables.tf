@@ -21,11 +21,11 @@ variable "cidr_public_subnet_web" {
   default     = ["10.0.0.0/24", "10.0.1.0/24"]
 }
 
-# variable "instance_type" {
-#   type        = string
-#   description = "instance type"
-#   default     = "t2.micro"
-# }
+variable "instance_type" {
+  type        = string
+  description = "instance type"
+  default     = "t2.micro"
+}
 
 # variable "instance_ami" {
 #   type        = string
@@ -46,63 +46,23 @@ variable "availability_zones" {
 }
 
 
-variable "vpc_id" {
-  description = "The ID of the VPC where all resources will be deployed."
+variable "aurora_sg_id" {
+  description = "The ID of the Aurora security group"
   type        = string
-
 }
 
-
-variable "db_name" {
-  description = "The name of the initial database to be created in the Aurora cluster."
+variable "efs_sg_id" {
+  description = "The ID of the EFS security group"
   type        = string
-  default     = "wordpressdb"
 }
 
-# variable "db_master_username" {
-#   description = "The master username for the Aurora database."
-#   type        = string
-#   default     = "admin"
-# }
-
-variable "db_instance_class" {
-  description = "The instance class to use for the Aurora database instances."
-  type        = string
-  default     = "db.t3.micro"
+variable "ec2_key_name" {
+  description = "Emergency access key for ssh"
+  type = string
 }
 
-variable "private_data_subnet_ids" {
-  description = "A list of private subnet IDs for the data layer (Aurora, EFS)."
-  type        = list(string)
+variable "efs_fs_id" {
+  description = "elastic file system id"
+  type = string
+  
 }
-
-# variable "db_name_1" {
-#   description = "The name of the initial database to be created in the Aurora cluster."
-#   type        = string
-#   default     = "wordpress_db"
-# }
-
-variable "db_username" {
-  description = "The master username for the Aurora database."
-  type        = string
-  default     = "dbadmin"
-}
-
-# variable "db_instance_class_aurora" {
-#   description = "The instance class for the Aurora database instances."
-#   type        = string
-#   default     = "db.t3.medium"
-# }
-
-variable "project_name" {
-  description = "A unique name for the project to prefix resources."
-  type        = string
-  default     = "wp-ha"
-}
-
-variable "db_allocated_storage" {
-  description = "The amount of storage in GB for the RDS instance."
-  type        = number
-  default     = 20
-}
-
