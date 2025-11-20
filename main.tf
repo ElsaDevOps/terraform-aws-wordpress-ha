@@ -151,6 +151,8 @@ module "vpc" {
 
 # Auto scaling groups
 
+ #Creating Custom VPC
+
 resource "aws_vpc" "my_vpc" {
   cidr_block           = var.cidr_blockvpc
   instance_tenancy     = "default"
@@ -208,4 +210,5 @@ resource "aws_subnet" "private_subnet_data" {
   tags = {
     Name = "Private subnet data"
   }
+}
 }
