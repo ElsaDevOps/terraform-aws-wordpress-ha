@@ -12,9 +12,9 @@ resource "aws_security_group" "ec2-compute" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow outbount HTTPS to the Internet"
-}
+  }
 
-egress {
+  egress {
     from_port       = 2049
     to_port         = 2049
     protocol        = "tcp"
@@ -22,7 +22,7 @@ egress {
     description     = "Allow outbound to EFS"
   }
 
-    tags = {
+  tags = {
     Name = "WordPress EC2 SG"
   }
 
@@ -43,8 +43,8 @@ resource "aws_security_group_rule" "allow_ec2_to_aurora" {
   from_port                = 3306
   to_port                  = 3306
   protocol                 = "tcp"
-  security_group_id        = aws_security_group.aurora.id        # The destination
-  source_security_group_id = aws_security_group.ec2-compute.id   # The source
+  security_group_id        = aws_security_group.aurora.id      # The destination
+  source_security_group_id = aws_security_group.ec2-compute.id # The source
   description              = "Allow inbound MySQL from EC2 instances"
 }
 

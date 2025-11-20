@@ -45,11 +45,11 @@ variable "availability_zones" {
   default     = ["eu-west-2a", "eu-west-2b"]
 }
 
-  
- variable "vpc_id" {
+
+variable "vpc_id" {
   description = "The ID of the VPC where all resources will be deployed."
   type        = string
-  
+
 }
 
 
@@ -97,7 +97,7 @@ variable "db_instance_class_aurora" {
 variable "project_name" {
   description = "A unique name for the project to prefix resources."
   type        = string
-  default     = "wp-ha" 
+  default     = "wp-ha"
 }
 
 variable "db_allocated_storage" {
