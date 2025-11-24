@@ -182,33 +182,7 @@ resource "aws_subnet" "public_subnet" {
 
 
 
-# private subnet app tier
-
-resource "aws_subnet" "private_subnet_app" {
-  for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_private_subnet_app[i] }
-  vpc_id                  = aws_vpc.my_vpc.id
-  cidr_block              = each.value
-  availability_zone       = each.key
-  map_public_ip_on_launch = false
-
-  tags = {
-    Name = "Private subnet app"
-  }
-}
 
 
 
-#private subnet data tier
-
-resource "aws_subnet" "private_subnet_data" {
-  for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_private_subnet_data[i] }
-  vpc_id                  = aws_vpc.my_vpc.id
-  cidr_block              = each.value
-  availability_zone       = each.key
-  map_public_ip_on_launch = false
-
-  tags = {
-    Name = "Private subnet data"
-  }
-}
 

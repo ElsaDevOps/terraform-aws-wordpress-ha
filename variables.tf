@@ -3,17 +3,17 @@ variable "cidr_blockvpc" {
   description = "CIDR block for VPC"
   default     = "10.0.0.0/16"
 }
-variable "cidr_private_subnet_app" {
-  type        = list(string)
-  description = "CIDR blocks for private subnets on the app tier"
-  default     = ["10.0.101.0/24", "10.0.102.0/24"]
-}
+# variable "cidr_private_subnet_app" {
+#   type        = list(string)
+#   description = "CIDR blocks for private subnets on the app tier"
+#   default     = ["10.0.101.0/24", "10.0.102.0/24"]
+# }
 
-variable "cidr_private_subnet_data" {
-  type        = list(string)
-  description = "CIDR blocks for private subnets on the data tier"
-  default     = ["10.0.201.0/24", "10.0.202.0/24"]
-}
+# variable "cidr_private_subnet_data" {
+#   type        = list(string)
+#   description = "CIDR blocks for private subnets on the data tier"
+#   default     = ["10.0.201.0/24", "10.0.202.0/24"]
+# }
 
 variable "cidr_public_subnet_web" {
   type        = list(string)
@@ -21,11 +21,12 @@ variable "cidr_public_subnet_web" {
   default     = ["10.0.0.0/24", "10.0.1.0/24"]
 }
 
-# variable "instance_type" {
-#   type        = string
-#   description = "instance type"
-#   default     = "t2.micro"
-# }
+
+variable "instance_type" {
+  type        = string
+  description = "instance type"
+  default     = "t2.micro"
+}
 
 # variable "instance_ami" {
 #   type        = string
@@ -46,63 +47,29 @@ variable "availability_zones" {
 }
 
 
-variable "vpc_id" {
-  description = "The ID of the VPC where all resources will be deployed."
-  type        = string
 
-}
-
-
-variable "db_name" {
-  description = "The name of the initial database to be created in the Aurora cluster."
-  type        = string
-  default     = "wordpressdb"
-}
-
-# variable "db_master_username" {
-#   description = "The master username for the Aurora database."
+# variable "aurora_sg_id" {
+#   description = "The ID of the Aurora security group"
 #   type        = string
-#   default     = "admin"
 # }
 
-variable "db_instance_class" {
-  description = "The instance class to use for the Aurora database instances."
-  type        = string
-  default     = "db.t3.micro"
-}
-
-variable "private_data_subnet_ids" {
-  description = "A list of private subnet IDs for the data layer (Aurora, EFS)."
-  type        = list(string)
-}
-
-# variable "db_name_1" {
-#   description = "The name of the initial database to be created in the Aurora cluster."
+# variable "efs_sg_id" {
+#   description = "The ID of the EFS security group"
 #   type        = string
-#   default     = "wordpress_db"
 # }
 
-variable "db_username" {
-  description = "The master username for the Aurora database."
+variable "ec2_key_name" {
+  description = "Emergency access key for ssh"
   type        = string
-  default     = "dbadmin"
 }
 
-# variable "db_instance_class_aurora" {
-#   description = "The instance class for the Aurora database instances."
+# variable "efs_fs_id" {
+#   description = "elastic file system id"
 #   type        = string
-#   default     = "db.t3.medium"
+
 # }
 
-variable "project_name" {
-  description = "A unique name for the project to prefix resources."
-  type        = string
-  default     = "wp-ha"
-}
-
-variable "db_allocated_storage" {
-  description = "The amount of storage in GB for the RDS instance."
-  type        = number
-  default     = 20
-}
-
+# variable "public_subnet_id_web" {
+#   description = "List of public subnet IDs where the Auto Scaling Group will launch instances"
+#   type        = list(string)
+# }

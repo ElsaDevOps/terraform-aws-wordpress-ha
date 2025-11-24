@@ -1,0 +1,50 @@
+#cloud-config
+package_update: true
+
+# 1. Install Packages (Amazon Linux 2023)
+packages:
+  - httpd
+  - php
+  - php-mysqlnd
+  - php-fpm
+  - php-gd
+  - amazon-efs-utils
+
+# 2. Configure EFS Mount in /etc/fstab
+write_files:
+  - path: /etc/fstab
+    append: true
+    content: |
+      ${efs_id}:/ /var/www/html efs _netdev,tls 0 0
+
+# 3. Boot Commands
+runcmd:
+  # A. Setup Mount Point
+  - [ mkdir, -p, /var/www/html ]
+  - [ mount, -a ]
+
+  # B. Start Web Server
+  - [ systemctl, enable, httpd ]
+  - [ systemctl, start, httpd ]
+
+  # C. Smart WordPress Installation (Idempotent)
+  #    We write a small script block here. It checks if the shared EFS drive 
+  #    is empty. If it is, we install WordPress. If it has files (because 
+  #    another instance installed it), we do nothing.
+  - |
+    if [ -z "$(ls -A /var/www/html)" ]; then
+      echo "EFS is empty. Installing WordPress..."
+      cd /var/www/html
+      wget https://wordpress.org/latest.tar.gz
+      tar -xzf latest.tar.gz
+      cp -r wordpress/* .
+      rm -rf wordpress latest.tar.gz
+      
+      # Set permissions so Apache can write (for uploads/plugins)
+      chown -R apache:apache /var/www/html
+      chmod -R 755 /var/www/html
+    else
+      echo "WordPress is already installed on EFS. Skipping installation."
+      # Ensure permissions are correct even on existing files
+      chown -R apache:apache /var/www/html
+    fi

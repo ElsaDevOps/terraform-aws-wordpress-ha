@@ -1,69 +1,90 @@
+# Security groups
+
+
+
+
+# resource "aws_security_group" "ec2-compute" {
+#   name        = "wordpress-ec2-compute-sg"
+#   description = "Allow traffic to and from the WordPress EC2 instances"
+#   vpc_id      = module.vpc.vpc_id
+
+# #   ingress {
+# #     protocol  = "tcp"
+# #     from_port = 443
+# #     to_port   = 443
+# #     security_groups = [aws_security_group.wp_lb_sg.id]
+# #   }
+
+
+#   ingress {
+#     description = "Allow HTTP from Anywhere for testing"
+#     from_port   = 80
+#     to_port     = 80
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+
+#   egress {
+#     from_port   = 443
+#     to_port     = 443
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]
+#     description = "Allow outbount HTTPS to the Internet"
+# }
+
+# egress {
+#     from_port       = 2049
+#     to_port         = 2049
+#     protocol        = "tcp"
+#     security_groups = [var.efs_sg_id]
+#     description     = "Allow outbound to EFS"
+#   }
+
+#    egress {
+#     from_port       = 3306
+#     to_port         = 3306
+#     protocol        = "tcp"
+#     security_groups = [var.aurora_sg_id]
+#     description     = "Allow outbound to Aurora DB"
+
+
+
+
+# }
+
+#  tags = {
+#     Name = "WordPress EC2 SG"
+#   }
+
+
+# }
+
 
 resource "aws_security_group" "ec2-compute" {
   name        = "wordpress-ec2-compute-sg"
   description = "Allow traffic to and from the WordPress EC2 instances"
-  vpc_id      = var.vpc_id
+  vpc_id      = module.vpc.vpc_id # Keep this as is since it seems to be working for you
 
-
-
-  egress {
-    from_port   = 443
-    to_port     = 443
+  # INGRESS: Allow HTTP from Anywhere (for verification today)
+  ingress {
+    description = "Allow HTTP from Anywhere for testing"
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow outbount HTTPS to the Internet"
   }
 
+  # EGRESS: Allow All Outbound
+  # This allows the instance to reach EFS, Aurora, AND the internet for updates.
+  # We control security at the EFS/DB level (Ingress), not here.
   egress {
-    from_port       = 2049
-    to_port         = 2049
-    protocol        = "tcp"
-    security_groups = [aws_security_group.efs.id]
-    description     = "Allow outbound to EFS"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1" # "-1" means all protocols
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
     Name = "WordPress EC2 SG"
-  }
-
-}
-
-resource "aws_security_group" "aurora" {
-  name        = "wordpress-aurora-db-sg"
-  description = "Security group for the Aurora database cluster"
-  vpc_id      = var.vpc_id
-
-  tags = {
-    Name = "WordPress Aurora SG"
-  }
-}
-
-resource "aws_security_group_rule" "allow_ec2_to_aurora" {
-  type                     = "ingress"
-  from_port                = 3306
-  to_port                  = 3306
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.aurora.id      # The destination
-  source_security_group_id = aws_security_group.ec2-compute.id # The source
-  description              = "Allow inbound MySQL from EC2 instances"
-}
-
-resource "aws_security_group_rule" "ec2_to_aurora_egress" {
-  type                     = "egress"
-  from_port                = 3306
-  to_port                  = 3306
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.ec2-compute.id # The source
-  source_security_group_id = aws_security_group.aurora.id      # The destination
-  description              = "Allow EC2 to talk to Aurora"
-}
-
-resource "aws_security_group" "efs" {
-  name        = "${var.project_name}-efs-sg"
-  description = "Allow NFS traffic from the EC2 instances"
-  vpc_id      = var.vpc_id # We need to make sure vpc_id is a defined variable
-
-  tags = {
-    Name = "${var.project_name}-efs-sg"
   }
 }
