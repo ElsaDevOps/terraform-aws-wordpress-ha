@@ -3,11 +3,11 @@ variable "cidr_blockvpc" {
   description = "CIDR block for VPC"
   default     = "10.0.0.0/16"
 }
-variable "cidr_private_subnet_app" {
-  type        = list(string)
-  description = "CIDR blocks for private subnets on the app tier"
-  default     = ["10.0.101.0/24", "10.0.102.0/24"]
-}
+# variable "cidr_private_subnet_app" {
+#   type        = list(string)
+#   description = "CIDR blocks for private subnets on the app tier"
+#   default     = ["10.0.101.0/24", "10.0.102.0/24"]
+# }
 
 variable "cidr_private_subnet_data" {
   type        = list(string)
@@ -15,6 +15,11 @@ variable "cidr_private_subnet_data" {
   default     = ["10.0.201.0/24", "10.0.202.0/24"]
 }
 
+variable "cidr_public_subnet_web" {
+  type        = list(string)
+  description = "CIDR blocks for public subnets on the web tier"
+  default     = ["10.0.0.0/24", "10.0.1.0/24"]
+}
 variable "cidr_public_subnet_web" {
   type        = list(string)
   description = "CIDR blocks for public subnets on the web tier"
@@ -44,6 +49,11 @@ variable "availability_zones" {
   description = "The availability zones to deploy to"
   default     = ["eu-west-2a", "eu-west-2b"]
 }
+variable "availability_zones" {
+  type        = list(string)
+  description = "The availability zones to deploy to"
+  default     = ["eu-west-2a", "eu-west-2b"]
+}
 
 
 variable "aurora_sg_id" {
@@ -66,3 +76,8 @@ variable "efs_fs_id" {
   type = string
   
 }
+
+# variable "public_subnet_id_web" {
+#   description = "List of public subnet IDs where the Auto Scaling Group will launch instances"
+#   type        = list(string)
+# }

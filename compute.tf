@@ -36,14 +36,19 @@ resource "aws_launch_template" "wordpress" {
 
 resource "aws_autoscaling_group" "wordpress" {
   name                      = "wordpress-asg"
-  availability_zones = ["eu-west-2a, eu-west-2b"]
-  vpc_zone_identifier       = [aws_subnet.public_subnet_id_web.id, aws_subnet.public_subnet_id_web.id]
+  vpc_zone_identifier =  values(module.vpc.public_subnet_id_web)
   desired_capacity   = 1
-  max_size           = 2
+  max_size           = 1
   min_size           = 1
 
   launch_template {
     id      = aws_launch_template.wordpress.id
     version = "$Latest"
+  }
+
+  tag {
+    key                 = "Name"
+    value               = "WordPress-Instance"
+    propagate_at_launch = true
   }
 }
