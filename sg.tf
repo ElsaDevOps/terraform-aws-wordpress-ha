@@ -46,9 +46,9 @@
 #     protocol        = "tcp"
 #     security_groups = [var.aurora_sg_id]
 #     description     = "Allow outbound to Aurora DB"
-  
-  
- 
+
+
+
 
 # }
 

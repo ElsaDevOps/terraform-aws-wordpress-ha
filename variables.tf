@@ -68,13 +68,13 @@ variable "efs_sg_id" {
 
 variable "ec2_key_name" {
   description = "Emergency access key for ssh"
-  type = string
+  type        = string
 }
 
 variable "efs_fs_id" {
   description = "elastic file system id"
-  type = string
-  
+  type        = string
+
 }
 
 # variable "public_subnet_id_web" {

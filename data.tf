@@ -25,7 +25,7 @@ data "aws_ami" "amazon_linux_2023" {
 #   vpc_security_group_ids = #TBD
 #   key_name = var.ec2_key_name
 
-  
+
 #   lifecycle {
 #     create_before_destroy = true
 #   }

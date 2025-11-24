@@ -12,7 +12,7 @@ resource "aws_launch_template" "wordpress" {
 
   # 2. SECURITY: Who can talk to it?
   vpc_security_group_ids = [aws_security_group.ec2-compute.id]
-  
+
   # 3. ACCESS: How do we debug it?
   key_name = var.ec2_key_name
 
@@ -35,11 +35,11 @@ resource "aws_launch_template" "wordpress" {
 }
 
 resource "aws_autoscaling_group" "wordpress" {
-  name                      = "wordpress-asg"
-  vpc_zone_identifier =  values(module.vpc.public_subnet_id_web)
-  desired_capacity   = 1
-  max_size           = 1
-  min_size           = 1
+  name                = "wordpress-asg"
+  vpc_zone_identifier = values(module.vpc.public_subnet_id_web)
+  desired_capacity    = 1
+  max_size            = 1
+  min_size            = 1
 
   launch_template {
     id      = aws_launch_template.wordpress.id
