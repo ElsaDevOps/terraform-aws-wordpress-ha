@@ -212,23 +212,5 @@ resource "aws_subnet" "private_subnet_data" {
   }
 }
 
-resource "aws_subnet" "public_subnet" {
-  for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_public_subnet_web[i] }
-  vpc_id                  = aws_vpc.my_vpc.id
-  cidr_block              = each.value
-  availability_zone       = each.key
-  map_public_ip_on_launch = true
 
-  tags = {
-    Name = "Public subnet web"
-  }
-}
 
-resource "aws_vpc" "my_vpc" {
-  cidr_block           = var.cidr_blockvpc
-  instance_tenancy     = "default"
-  enable_dns_hostnames = true
-  tags = {
-    Name = "my_vpc"
-  }
-}

@@ -20,11 +20,7 @@ variable "cidr_public_subnet_web" {
   description = "CIDR blocks for public subnets on the web tier"
   default     = ["10.0.0.0/24", "10.0.1.0/24"]
 }
-variable "cidr_public_subnet_web" {
-  type        = list(string)
-  description = "CIDR blocks for public subnets on the web tier"
-  default     = ["10.0.0.0/24", "10.0.1.0/24"]
-}
+
 
 variable "instance_type" {
   type        = string
@@ -49,11 +45,7 @@ variable "availability_zones" {
   description = "The availability zones to deploy to"
   default     = ["eu-west-2a", "eu-west-2b"]
 }
-variable "availability_zones" {
-  type        = list(string)
-  description = "The availability zones to deploy to"
-  default     = ["eu-west-2a", "eu-west-2b"]
-}
+
 
 
 variable "aurora_sg_id" {
