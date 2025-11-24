@@ -9,11 +9,11 @@ variable "cidr_blockvpc" {
 #   default     = ["10.0.101.0/24", "10.0.102.0/24"]
 # }
 
-variable "cidr_private_subnet_data" {
-  type        = list(string)
-  description = "CIDR blocks for private subnets on the data tier"
-  default     = ["10.0.201.0/24", "10.0.202.0/24"]
-}
+# variable "cidr_private_subnet_data" {
+#   type        = list(string)
+#   description = "CIDR blocks for private subnets on the data tier"
+#   default     = ["10.0.201.0/24", "10.0.202.0/24"]
+# }
 
 variable "cidr_public_subnet_web" {
   type        = list(string)
@@ -48,26 +48,26 @@ variable "availability_zones" {
 
 
 
-variable "aurora_sg_id" {
-  description = "The ID of the Aurora security group"
-  type        = string
-}
+# variable "aurora_sg_id" {
+#   description = "The ID of the Aurora security group"
+#   type        = string
+# }
 
-variable "efs_sg_id" {
-  description = "The ID of the EFS security group"
-  type        = string
-}
+# variable "efs_sg_id" {
+#   description = "The ID of the EFS security group"
+#   type        = string
+# }
 
 variable "ec2_key_name" {
   description = "Emergency access key for ssh"
   type        = string
 }
 
-variable "efs_fs_id" {
-  description = "elastic file system id"
-  type        = string
+# variable "efs_fs_id" {
+#   description = "elastic file system id"
+#   type        = string
 
-}
+# }
 
 # variable "public_subnet_id_web" {
 #   description = "List of public subnet IDs where the Auto Scaling Group will launch instances"
