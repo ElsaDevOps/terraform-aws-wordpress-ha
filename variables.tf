@@ -3,17 +3,17 @@ variable "cidr_blockvpc" {
   description = "CIDR block for VPC"
   default     = "10.0.0.0/16"
 }
-# variable "cidr_private_subnet_app" {
-#   type        = list(string)
-#   description = "CIDR blocks for private subnets on the app tier"
-#   default     = ["10.0.101.0/24", "10.0.102.0/24"]
-# }
+variable "cidr_private_subnet_app" {
+  type        = list(string)
+  description = "CIDR blocks for private subnets on the app tier"
+  default     = ["10.0.101.0/24", "10.0.102.0/24"]
+}
 
-# variable "cidr_private_subnet_data" {
-#   type        = list(string)
-#   description = "CIDR blocks for private subnets on the data tier"
-#   default     = ["10.0.201.0/24", "10.0.202.0/24"]
-# }
+variable "cidr_private_subnet_data" {
+  type        = list(string)
+  description = "CIDR blocks for private subnets on the data tier"
+  default     = ["10.0.201.0/24", "10.0.202.0/24"]
+}
 
 variable "cidr_public_subnet_web" {
   type        = list(string)
@@ -69,7 +69,37 @@ variable "ec2_key_name" {
 
 # }
 
-# variable "public_subnet_id_web" {
-#   description = "List of public subnet IDs where the Auto Scaling Group will launch instances"
-#   type        = list(string)
-# }
+
+
+variable "db_instance_class" {
+  description = "The instance type of the RDS instance"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "db_allocated_storage" {
+  description = "The amount of storage needed"
+  type        = number
+  default     = 20
+}
+
+
+
+# Add this one
+variable "db_name" {
+  description = "The name of the database to create"
+  type        = string
+  default     = "wordpress" # Simple, valid database name
+}
+
+variable "project_name" {
+  description = "Name of the project, used for tagging and naming resources"
+  type        = string
+  default     = "wordpress" # or whatever you want to call your project
+}
+
+variable "db_username" {
+  description = "The master username for the database"
+  type        = string
+  default     = "wp_master"
+}

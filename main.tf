@@ -2,6 +2,12 @@
 module "vpc" {
   source = "./modules/vpc"
 
+  cidr_blockvpc            = var.cidr_blockvpc
+  cidr_public_subnet_web   = var.cidr_public_subnet_web
+  cidr_private_subnet_app  = var.cidr_private_subnet_app
+  cidr_private_subnet_data = var.cidr_private_subnet_data
+  availability_zones       = var.availability_zones
+
 
 }
 

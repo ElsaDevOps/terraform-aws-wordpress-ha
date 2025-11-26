@@ -29,3 +29,13 @@ output "public_subnet_id_web" {
     for az, subnet in aws_subnet.public_subnet : az => subnet.id
   }
 }
+
+output "rds_endpoint" {
+  description = "The connection endpoint for the RDS instance"
+  value       = aws_db_instance.dev_db.endpoint
+}
+
+output "database_name" {
+  description = "The name of the database"
+  value       = aws_db_instance.dev_db.db_name
+}

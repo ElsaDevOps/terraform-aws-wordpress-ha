@@ -38,3 +38,8 @@ terraform.rc
 /volume/
 
 
+.aws/
+.pem
+.key
+!example.tfvars
+EOF
