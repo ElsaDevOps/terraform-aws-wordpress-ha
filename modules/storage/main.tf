@@ -11,7 +11,7 @@ resource "aws_efs_file_system" "wp_efs" {
   creation_token = "wordpress-efs-token"
 
   tags = {
-    Name = "wordpress-efs"
+    Name = "${var.project_name}-efs"
   }
 }
 
