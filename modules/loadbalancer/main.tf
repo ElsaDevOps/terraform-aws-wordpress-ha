@@ -57,39 +57,3 @@ resource "aws_autoscaling_attachment" "example" {
   autoscaling_group_name = aws_autoscaling_group.wordpress.id
   lb_target_group_arn    = aws_lb_target_group.wp_alb_tg.arn
 }
-
-
-resource "aws_security_group" "wp_alb_sg" {
-  name        = "wordpress-alb-sg"
-  description = "Allow the ALB to recieve ingress traffic"
-  vpc_id      = module.vpc.vpc_id
-
-  # INGRESS: Allow HTTPS and HTTP from Anywhere 
-  ingress {
-    description = "Allow HTTP from Anywhere for testing"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Allow HTTPS from Anywhere"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # EGRESS: Allow All Outbound
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "WordPress ALB SG"
-  }
-}

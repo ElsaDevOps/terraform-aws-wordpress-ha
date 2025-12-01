@@ -12,12 +12,12 @@ resource "aws_db_instance" "dev_db" {
 
   # --- Instance & Engine Configuration ---
   engine         = "mysql"
-  engine_version = "8.0"                 # A current, stable MySQL version
-  instance_class = var.db_instance_class # This must be "db.t3.micro" for Free Tier
+  engine_version = "8.0"
+  instance_class = var.db_instance_class
 
   # --- Storage Configuration ---
-  allocated_storage = var.db_allocated_storage # This should be 20 for Free Tier
-  storage_type      = "gp2"                    # General Purpose SSD
+  allocated_storage = var.db_allocated_storage
+  storage_type      = "gp2"
 
   # --- Database Credentials & Naming ---
   db_name  = var.db_name
@@ -27,13 +27,13 @@ resource "aws_db_instance" "dev_db" {
   # --- Network & Security ---
   db_subnet_group_name   = aws_db_subnet_group.rds.name
   vpc_security_group_ids = [aws_security_group.rds.id]
-  publicly_accessible    = false # CRITICAL: Never expose a DB to the internet
+  publicly_accessible    = false
 
   # --- Backup & Safety (Dev-Specific Settings) ---
-  # For production, these should be more robust.
-  backup_retention_period = 0     # Disable automated backups for dev to save cost
-  skip_final_snapshot     = true  # Don't create a snapshot when we destroy it
-  deletion_protection     = false # Allow easy destruction of this dev instance
+
+  backup_retention_period = 0
+  skip_final_snapshot     = true
+  deletion_protection     = false
 
   tags = {
     Name = "${var.project_name}-dev-db"
@@ -43,4 +43,4 @@ resource "aws_db_instance" "dev_db" {
 data "aws_ssm_parameter" "db_password" {
   name            = "/wordpress/aurora/master-password"
   with_decryption = true
-}  
+}

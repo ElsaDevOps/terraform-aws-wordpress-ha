@@ -28,8 +28,8 @@ runcmd:
   - [ systemctl, start, httpd ]
 
   # C. Smart WordPress Installation (Idempotent)
-  #    We write a small script block here. It checks if the shared EFS drive 
-  #    is empty. If it is, we install WordPress. If it has files (because 
+  #    We write a small script block here. It checks if the shared EFS drive
+  #    is empty. If it is, we install WordPress. If it has files (because
   #    another instance installed it), we do nothing.
   - |
     if [ -z "$(ls -A /var/www/html)" ]; then
@@ -39,7 +39,7 @@ runcmd:
       tar -xzf latest.tar.gz
       cp -r wordpress/* .
       rm -rf wordpress latest.tar.gz
-      
+
       # Set permissions so Apache can write (for uploads/plugins)
       chown -R apache:apache /var/www/html
       chmod -R 755 /var/www/html

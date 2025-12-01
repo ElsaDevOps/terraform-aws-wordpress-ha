@@ -32,4 +32,3 @@ resource "aws_iam_role_policy_attachment" "iam-attach" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
-
