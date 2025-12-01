@@ -1,3 +1,12 @@
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.0"
+    }
+  }
+}
 # IAM USER
 resource "aws_iam_role" "ec2_role" {
   name = "test_role"
@@ -32,4 +41,3 @@ resource "aws_iam_role_policy_attachment" "iam-attach" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
-

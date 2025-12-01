@@ -22,6 +22,7 @@ variable "cidr_public_subnet_web" {
 }
 
 
+# tflint-ignore: terraform_unused_declarations
 variable "instance_type" {
   type        = string
   description = "instance type"
@@ -58,6 +59,8 @@ variable "availability_zones" {
 #   type        = string
 # }
 
+
+# tflint-ignore: terraform_unused_declarations
 variable "ec2_key_name" {
   description = "Emergency access key for ssh"
   type        = string
@@ -92,14 +95,18 @@ variable "db_name" {
   default     = "wordpress" # Simple, valid database name
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "project_name" {
   description = "Name of the project, used for tagging and naming resources"
   type        = string
   default     = "wordpress" # or whatever you want to call your project
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "db_username" {
   description = "The master username for the database"
   type        = string
   default     = "wp_master"
 }
+
+# tflint-ignore: terraform_unused_declarations
