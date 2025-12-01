@@ -1,3 +1,12 @@
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.0"
+    }
+  }
+}
 resource "aws_db_subnet_group" "rds" {
   name       = "wordpress-rds-sng"
   subnet_ids = values(var.subnet_ids)
