@@ -11,32 +11,27 @@ module "vpc" {
 
 }
 
+#Database module
+
+module "database" {
+  source               = "./modules/database"
+  subnet_ids           = module.vpc.private_subnet_id_data
+  rds_sg_id            = module.security.rds_sg_id
+  db_username          = var.db_username
+  project_name         = var.project_name
+  db_instance_class    = var.db_instance_class
+  db_allocated_storage = var.db_allocated_storage
+  db_name              = var.db_name
 
 
-#Creating Custom VPC
 
-resource "aws_vpc" "my_vpc" {
-  cidr_block           = var.cidr_blockvpc
-  instance_tenancy     = "default"
-  enable_dns_hostnames = true
-  tags = {
-    Name = "my_vpc"
-  }
 }
 
+# Security group module
+module "security" {
+  source = "./modules/security"
+  vpc_id = module.vpc.vpc_id
 
-# # Create Public and Private Subnets
 
-# Public subnet web tier
 
-resource "aws_subnet" "public_subnet" {
-  for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_public_subnet_web[i] }
-  vpc_id                  = aws_vpc.my_vpc.id
-  cidr_block              = each.value
-  availability_zone       = each.key
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "Public subnet web"
-  }
 }

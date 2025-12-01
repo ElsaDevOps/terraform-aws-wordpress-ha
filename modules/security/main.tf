@@ -4,19 +4,7 @@
 resource "aws_security_group" "ec2-compute" {
   name        = "wordpress-ec2-compute-sg"
   description = "Allow traffic to and from the WordPress EC2 instances"
-  vpc_id      = module.vpc.vpc_id
-
-  # INGRESS: Allow traffic from ALB
-  ingress {
-    description     = "Allow traffic from ALB only"
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    security_groups = [aws_security_group.wp_alb_sg.id]
-  }
-
-
-
+  vpc_id      = var.vpc_id
   egress {
     from_port   = 0
     to_port     = 0
@@ -29,19 +17,30 @@ resource "aws_security_group" "ec2-compute" {
   }
 }
 
+resource "aws_security_group_rule" "allow_alb_traffic_http" {
+  type                     = "ingress"
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.wp_alb_sg.id
+  source_security_group_id = aws_security_group.wp_app_sg.id
+}
+
+resource "aws_security_group_rule" "allow_alb_traffic_https" {
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.wp_alb_sg.id
+  source_security_group_id = aws_security_group.wp_app_sg.id
+}
+
+
+
 resource "aws_security_group" "rds" {
   name        = "${var.project_name}-rds-sg"
   description = "Security group for RDS database"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress {
-    description     = "MySQL from EC2 instances"
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    security_groups = [aws_security_group.ec2-compute.id] # Only from EC2, not from internet
-  }
-
+  vpc_id      = var.vpc_id
   egress {
     from_port   = 0
     to_port     = 0
@@ -54,12 +53,21 @@ resource "aws_security_group" "rds" {
   }
 }
 
-# Wordpress app tier secuirty group
+resource "aws_security_group_rule" "allow_MySQL" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.rds.id
+  source_security_group_id = aws_security_group.wp_app_sg.id
+}
+
+# Wordpress app tier security group
 
 resource "aws_security_group" "wp_app_sg" {
   name        = "wordpress-app-sg"
   description = "security group for wordpress app instances"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 
   egress {
     from_port   = 0
@@ -76,21 +84,22 @@ resource "aws_security_group" "wp_app_sg" {
 
 }
 
+resource "aws_security_group_rule" "allow_NFS" {
+  type                     = "ingress"
+  from_port                = 2049
+  to_port                  = 2049
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.efs_sg.id
+  source_security_group_id = aws_security_group.wp_app_sg.id
+}
+
 # EFS Security group
 
 resource "aws_security_group" "efs_sg" {
   name        = "efs-sg"
   description = "Allow NFS access"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 
-  ingress {
-    description = "NFS from App SG"
-    protocol    = "tcp"
-    from_port   = 2049
-    to_port     = 2049
-
-    security_groups = [aws_security_group.wp_app_sg.id]
-  }
 
 
 
@@ -112,24 +121,8 @@ resource "aws_security_group" "efs_sg" {
 resource "aws_security_group" "wp_alb_sg" {
   name        = "wordpress-alb-sg"
   description = "Allow the ALB to recieve ingress traffic"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 
-  # INGRESS: Allow HTTPS and HTTP from Anywhere
-  ingress {
-    description = "Allow HTTP from Anywhere for testing"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Allow HTTPS from Anywhere"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
   # EGRESS: Allow All Outbound
   egress {
@@ -142,4 +135,23 @@ resource "aws_security_group" "wp_alb_sg" {
   tags = {
     Name = "WordPress ALB SG"
   }
+}
+
+
+resource "aws_security_group_rule" "allow_http_traffic" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  security_group_id = aws_security_group.wp_alb_sg.id
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "allow_https_traffic" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.wp_alb_sg.id
+  cidr_blocks       = ["0.0.0.0/0"]
 }

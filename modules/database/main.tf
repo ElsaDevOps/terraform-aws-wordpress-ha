@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "rds" {
   name       = "wordpress-rds-sng"
-  subnet_ids = values(module.vpc.private_subnet_id_data)
+  subnet_ids = values(var.subnet_ids)
 
   tags = {
     Name = "My DB subnet group"
@@ -26,7 +26,7 @@ resource "aws_db_instance" "dev_db" {
 
   # --- Network & Security ---
   db_subnet_group_name   = aws_db_subnet_group.rds.name
-  vpc_security_group_ids = [aws_security_group.rds.id]
+  vpc_security_group_ids = [var.rds_sg_id]
   publicly_accessible    = false
 
   # --- Backup & Safety (Dev-Specific Settings) ---

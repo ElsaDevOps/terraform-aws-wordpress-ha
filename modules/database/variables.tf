@@ -27,3 +27,13 @@ variable "db_username" {
   type        = string
   default     = "wp_master"
 }
+
+variable "subnet_ids" {
+  description = "the subnet id's from vpc module"
+  type        = map(string)
+}
+
+variable "rds_sg_id" {
+  description = "The ID od the rds security group"
+  type        = string
+}
