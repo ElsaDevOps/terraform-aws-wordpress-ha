@@ -30,7 +30,7 @@ variable "wp_app_sg_id" {
 
 }
 
-variable "public_subnet_id_web" {
+variable "private_subnet_id_app" {
   description = "The Id of the public subnet"
   type        = map(string)
 
