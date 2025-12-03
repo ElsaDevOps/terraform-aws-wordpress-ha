@@ -9,11 +9,6 @@ variable "subnet_ids" {
   type        = map(string)
 }
 
-variable "vpc_id" {
-  description = "The ID of the VPC"
-  type        = string
-
-}
 
 variable "efs_sg_id" {
   description = "the ID of the EFS sg"
