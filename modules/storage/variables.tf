@@ -15,9 +15,3 @@ variable "efs_sg_id" {
   type        = string
 
 }
-
-variable "wp_efs_id" {
-  description = "the ID of the EFS"
-  type        = string
-
-}

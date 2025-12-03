@@ -21,10 +21,7 @@ locals {
     key_name = var.ec2_key_name
   }
 
-  #Storage configuration
-  storage_config = {
-    wp_efs_id = var.wp_efs_id
-  }
+
   # Common values used across modules
   project_name = var.project_name
 }
