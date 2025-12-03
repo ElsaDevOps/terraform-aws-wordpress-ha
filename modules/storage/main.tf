@@ -20,8 +20,8 @@ resource "aws_efs_file_system" "wp_efs" {
 
 
 resource "aws_efs_mount_target" "alpha" {
-  for_each        = module.vpc.private_subnet_id_data
-  file_system_id  = aws_efs_file_system.wp_efs.id
+  for_each        = var.subnet_ids
+  file_system_id  = var.wp_efs_id
   subnet_id       = each.value
-  security_groups = [aws_security_group.efs_sg.id]
+  security_groups = [var.efs_sg_id]
 }

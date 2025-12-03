@@ -33,3 +33,8 @@ output "database_name" {
   description = "The name of the database"
   value       = module.database.database_name
 }
+
+output "wp_efs_id" {
+  description = "The ID of the EFS"
+  value       = module.storage.wp_efs_id
+}
