@@ -44,19 +44,18 @@ module "storage" {
   source     = "./modules/storage"
   subnet_ids = module.vpc.private_subnet_id_data
   efs_sg_id  = module.security.efs_sg_id
-
 }
 
 # Compute Module
 module "Compute" {
   source = "./modules/compute"
 
-  ec2_key_name         = local.compute_config.key_name
-  wordpress_ami_id     = module.AMI.wordpress_ami_id
-  wp_efs_id            = module.storage.wp_efs_id
-  iam_wp_pf_arn        = module.IAM.iam_wp_pf_arn
-  wp_app_sg_id         = module.security.wp_alb_sg_id
-  public_subnet_id_web = module.vpc.public_subnet_id_web
+  ec2_key_name          = local.compute_config.key_name
+  wordpress_ami_id      = module.AMI.wordpress_ami_id
+  wp_efs_id             = module.storage.wp_efs_id
+  iam_wp_pf_arn         = module.IAM.iam_wp_pf_arn
+  wp_app_sg_id          = module.security.wp_alb_sg_id
+  private_subnet_id_app = module.vpc.private_subnet_id_app
 }
 
 # Loadbalancer module

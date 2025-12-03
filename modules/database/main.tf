@@ -37,6 +37,7 @@ resource "aws_db_instance" "dev_db" {
   db_subnet_group_name   = aws_db_subnet_group.rds.name
   vpc_security_group_ids = [var.rds_sg_id]
   publicly_accessible    = false
+  multi_az               = true
 
   # --- Backup & Safety (Dev-Specific Settings) ---
 

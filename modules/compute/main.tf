@@ -20,9 +20,14 @@ resource "aws_launch_template" "wordpress" {
     arn = var.iam_wp_pf_arn
   }
 
-  # 2. SECURITY: Who can talk to it?
-  vpc_security_group_ids = [var.wp_app_sg_id]
+  network_interfaces {
 
+
+    associate_public_ip_address = false
+
+  }
+
+  vpc_security_group_ids = [var.wp_app_sg_id]
   # 3. ACCESS: How do we debug it?
   key_name = var.ec2_key_name
 
@@ -46,7 +51,7 @@ resource "aws_launch_template" "wordpress" {
 
 resource "aws_autoscaling_group" "wordpress" {
   name                = "wordpress-asg"
-  vpc_zone_identifier = values(var.public_subnet_id_web)
+  vpc_zone_identifier = values(var.private_subnet_id_app)
   desired_capacity    = 1
   max_size            = 1
   min_size            = 1
