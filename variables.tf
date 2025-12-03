@@ -89,10 +89,6 @@ variable "db_username" {
   default     = "wp_master"
 }
 
-variable "wp_efs_id" {
-  description = "the ID of the EFS"
-  type        = string
 
-}
 
 # tflint-ignore: terraform_unused_declarations

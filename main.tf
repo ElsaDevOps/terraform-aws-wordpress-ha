@@ -44,7 +44,7 @@ module "storage" {
   source     = "./modules/storage"
   subnet_ids = module.vpc.private_subnet_id_data
   efs_sg_id  = module.security.efs_sg_id
-  wp_efs_id  = local.storage_config.wp_efs_id
+
 }
 
 # Compute Module

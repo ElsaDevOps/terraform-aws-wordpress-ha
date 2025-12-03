@@ -6,7 +6,7 @@ variable "ec2_key_name" {
 variable "instance_type" {
   type        = string
   description = "instance type"
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
 variable "wordpress_ami_id" {
