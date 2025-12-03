@@ -29,12 +29,6 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-# variable "instance_ami" {
-#   type        = string
-#   description = "ami"
-#   default     = "ami-075599e9cc6e3190d"
-# }
-
 # variable "region" {
 #   type        = string
 #   description = "Aws region"
@@ -49,15 +43,6 @@ variable "availability_zones" {
 
 
 
-# variable "aurora_sg_id" {
-#   description = "The ID of the Aurora security group"
-#   type        = string
-# }
-
-# variable "efs_sg_id" {
-#   description = "The ID of the EFS security group"
-#   type        = string
-# }
 
 
 # tflint-ignore: terraform_unused_declarations
@@ -66,11 +51,6 @@ variable "ec2_key_name" {
   type        = string
 }
 
-# variable "efs_fs_id" {
-#   description = "elastic file system id"
-#   type        = string
-
-# }
 
 
 
@@ -99,7 +79,7 @@ variable "db_name" {
 variable "project_name" {
   description = "Name of the project, used for tagging and naming resources"
   type        = string
-  default     = "wordpress" # or whatever you want to call your project
+  default     = "wordpress"
 }
 
 # tflint-ignore: terraform_unused_declarations
@@ -107,6 +87,12 @@ variable "db_username" {
   description = "The master username for the database"
   type        = string
   default     = "wp_master"
+}
+
+variable "wp_efs_id" {
+  description = "the ID of the EFS"
+  type        = string
+
 }
 
 # tflint-ignore: terraform_unused_declarations
