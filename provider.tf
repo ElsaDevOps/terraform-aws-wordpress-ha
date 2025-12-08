@@ -8,8 +8,11 @@ terraform {
       version = "~> 6.0"
     }
   }
+
+
 }
 
 provider "aws" {
 
 }
+
