@@ -89,6 +89,10 @@ variable "db_username" {
   default     = "wp_master"
 }
 
+variable "domain_name" {
+  description = "the domain name"
+  type = string
+}
 
 
 # tflint-ignore: terraform_unused_declarations

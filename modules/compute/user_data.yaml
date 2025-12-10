@@ -1,6 +1,7 @@
 #cloud-config
 package_update: true
 
+
 # 1. Install Packages (Amazon Linux 2023)
 packages:
   - httpd
@@ -26,6 +27,9 @@ runcmd:
   # B. Start Web Server
   - [ systemctl, enable, httpd ]
   - [ systemctl, start, httpd ]
+  - [ systemctl, enable, php-fpm ]
+  - [ systemctl, start, php-fpm ]
+  - [ systemctl, start, httpd ]
 
   # C. Smart WordPress Installation (Idempotent)
   #    We write a small script block here. It checks if the shared EFS drive
@@ -48,3 +52,47 @@ runcmd:
       # Ensure permissions are correct even on existing files
       chown -R apache:apache /var/www/html
     fi
+
+
+  - |
+    cat > /var/www/html/wp-config.php << 'WPCONFIG'
+    <?php
+     /* Handle SSL termination at load balancer */
+    if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+        $_SERVER['HTTPS'] = 'on';
+    }
+
+    define('COOKIE_DOMAIN', '${domain_name}');
+    define('ADMIN_COOKIE_PATH', '/');
+    define('COOKIEPATH', '/');
+    define('SITECOOKIEPATH', '/');
+    define('FORCE_SSL_ADMIN', true);
+
+    define('WP_HOME', 'https://${domain_name}');
+    define('WP_SITEURL', 'https://${domain_name}');
+    define('DB_NAME', '${db_name}');
+    define('DB_USER', '${db_user}');
+    define('DB_PASSWORD', '${db_password}');
+    define('DB_HOST', '${db_host}');
+    define('DB_CHARSET', 'utf8');
+    define('DB_COLLATE', '');
+    
+    define('AUTH_KEY',         '${auth_key}');
+    define('SECURE_AUTH_KEY',  '${secure_auth_key}');
+    define('LOGGED_IN_KEY',    '${logged_in_key}');
+    define('NONCE_KEY',        '${nonce_key}');
+    define('AUTH_SALT',        '${auth_salt}');
+    define('SECURE_AUTH_SALT', '${secure_auth_salt}');
+    define('LOGGED_IN_SALT',   '${logged_in_salt}');
+    define('NONCE_SALT',       '${nonce_salt}');
+    
+    $table_prefix = 'wp_';
+    define('WP_DEBUG', false);
+    
+    if ( ! defined( 'ABSPATH' ) ) {
+        define( 'ABSPATH', __DIR__ . '/' );
+    }
+    require_once ABSPATH . 'wp-settings.php';
+    WPCONFIG
+    chown apache:apache /var/www/html/wp-config.php
+    chmod 640 /var/www/html/wp-config.php

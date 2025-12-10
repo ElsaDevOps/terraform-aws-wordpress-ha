@@ -38,3 +38,8 @@ output "wp_efs_id" {
   description = "The ID of the EFS"
   value       = module.storage.wp_efs_id
 }
+
+output "rds_id" {
+  description = "The ID of the instance"
+  value       = module.database.rds_id
+}

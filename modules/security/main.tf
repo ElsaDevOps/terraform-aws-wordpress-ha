@@ -30,17 +30,8 @@ resource "aws_security_group_rule" "allow_alb_traffic_http" {
   from_port                = 80
   to_port                  = 80
   protocol                 = "tcp"
-  security_group_id        = aws_security_group.wp_alb_sg.id
-  source_security_group_id = aws_security_group.wp_app_sg.id
-}
-
-resource "aws_security_group_rule" "allow_alb_traffic_https" {
-  type                     = "ingress"
-  from_port                = 443
-  to_port                  = 443
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.wp_alb_sg.id
-  source_security_group_id = aws_security_group.wp_app_sg.id
+  security_group_id        = aws_security_group.wp_app_sg.id
+  source_security_group_id = aws_security_group.wp_alb_sg.id
 }
 
 
@@ -86,10 +77,21 @@ resource "aws_security_group" "wp_app_sg" {
   }
 
 
+
+
   tags = {
-    Name = "wordpress-efs-sg"
+    Name = "wordpress-app-sg"
   }
 
+}
+
+resource "aws_security_group_rule" "allow_egress_rds" {
+  type                     = "egress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.wp_app_sg.id
+  source_security_group_id = aws_security_group.rds.id
 }
 
 resource "aws_security_group_rule" "allow_NFS" {

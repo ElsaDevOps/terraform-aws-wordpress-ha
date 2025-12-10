@@ -35,3 +35,32 @@ variable "private_subnet_id_app" {
   type        = map(string)
 
 }
+
+
+
+
+variable "database_name" {
+  description = "WordPress database name"
+  type        = string
+}
+
+variable "db_user" {
+  description = "WordPress database username"
+  type        = string
+}
+
+variable "db_password" {
+  description = "WordPress database password"
+  type        = string
+  sensitive   = true
+}
+
+variable "rds_endpoint" {
+  description = "RDS database endpoint"
+  type        = string
+}
+
+variable "domain_name" {
+  description = "the domain name"
+  type = string
+}
