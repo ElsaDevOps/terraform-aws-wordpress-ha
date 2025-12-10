@@ -5,10 +5,19 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 6.0"
     }
+
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.0"
+    }
   }
 }
 
-# compute.tf
+
+
+# Launch template
+
+
 
 resource "aws_launch_template" "wordpress" {
   name_prefix   = "wordpress-lt-"
@@ -24,18 +33,36 @@ resource "aws_launch_template" "wordpress" {
 
 
     associate_public_ip_address = false
+    security_groups             = [var.wp_app_sg_id]
 
   }
 
-  vpc_security_group_ids = [var.wp_app_sg_id]
+
   # 3. ACCESS: How do we debug it?
   key_name = var.ec2_key_name
 
   # 4. BRAINS: The Cloud-Init Configuration
   # We inject the EFS ID directly from the resource in persistence.tf
   user_data = base64encode(templatefile("${path.module}/user_data.yaml", {
-    efs_id = var.wp_efs_id
+    efs_id      = var.wp_efs_id
+    db_name     = var.database_name
+    db_user     = var.db_user
+    db_password = var.db_password
+    db_host     = var.rds_endpoint
+    domain_name = var.domain_name
+    # Use simple placeholders for keys
+    auth_key         = "${random_id.wp_keys.hex}-auth"
+    secure_auth_key  = "${random_id.wp_keys.hex}-secure"
+    logged_in_key    = "${random_id.wp_keys.hex}-logged"
+    nonce_key        = "${random_id.wp_keys.hex}-nonce"
+    auth_salt        = "${random_id.wp_keys.hex}-auth-salt"
+    secure_auth_salt = "${random_id.wp_keys.hex}-secure-salt"
+    logged_in_salt   = "${random_id.wp_keys.hex}-logged-salt"
+    nonce_salt       = "${random_id.wp_keys.hex}-nonce-salt"
   }))
+
+
+
 
   tag_specifications {
     resource_type = "instance"
@@ -49,16 +76,26 @@ resource "aws_launch_template" "wordpress" {
   }
 }
 
+resource "random_id" "wp_keys" {
+  byte_length = 32
+}
 resource "aws_autoscaling_group" "wordpress" {
   name                = "wordpress-asg"
   vpc_zone_identifier = values(var.private_subnet_id_app)
-  desired_capacity    = 1
-  max_size            = 1
+  desired_capacity    = 2
+  max_size            = 3
   min_size            = 1
 
   launch_template {
     id      = aws_launch_template.wordpress.id
     version = "$Latest"
+  }
+
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 90
+    }
   }
 
   tag {
