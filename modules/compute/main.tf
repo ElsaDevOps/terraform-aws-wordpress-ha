@@ -46,15 +46,15 @@ resource "aws_launch_template" "wordpress" {
     db_host     = var.rds_endpoint
     domain_name = var.domain_name
     # Use simple placeholders for keys
-  auth_key          = "${random_id.wp_keys.hex}-auth"
-  secure_auth_key   = "${random_id.wp_keys.hex}-secure"
-  logged_in_key     = "${random_id.wp_keys.hex}-logged"
-  nonce_key         = "${random_id.wp_keys.hex}-nonce"
-  auth_salt         = "${random_id.wp_keys.hex}-auth-salt"
-  secure_auth_salt  = "${random_id.wp_keys.hex}-secure-salt"
-  logged_in_salt    = "${random_id.wp_keys.hex}-logged-salt"
-  nonce_salt        = "${random_id.wp_keys.hex}-nonce-salt" 
-}))
+    auth_key         = "${random_id.wp_keys.hex}-auth"
+    secure_auth_key  = "${random_id.wp_keys.hex}-secure"
+    logged_in_key    = "${random_id.wp_keys.hex}-logged"
+    nonce_key        = "${random_id.wp_keys.hex}-nonce"
+    auth_salt        = "${random_id.wp_keys.hex}-auth-salt"
+    secure_auth_salt = "${random_id.wp_keys.hex}-secure-salt"
+    logged_in_salt   = "${random_id.wp_keys.hex}-logged-salt"
+    nonce_salt       = "${random_id.wp_keys.hex}-nonce-salt"
+  }))
 
 
 
@@ -71,8 +71,8 @@ resource "aws_launch_template" "wordpress" {
   }
 }
 
-resource "random_id" "wp_keys"{
-  byte_length = 32    
+resource "random_id" "wp_keys" {
+  byte_length = 32
 }
 resource "aws_autoscaling_group" "wordpress" {
   name                = "wordpress-asg"

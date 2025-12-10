@@ -62,5 +62,5 @@ variable "rds_endpoint" {
 
 variable "domain_name" {
   description = "the domain name"
-  type = string
+  type        = string
 }

@@ -37,7 +37,7 @@ resource "aws_lb_target_group" "wp_alb_tg" {
   vpc_id               = var.vpc_id
   deregistration_delay = 300
 
-    stickiness {
+  stickiness {
     type            = "lb_cookie"
     cookie_duration = 86400
     enabled         = true

@@ -91,7 +91,7 @@ variable "db_username" {
 
 variable "domain_name" {
   description = "the domain name"
-  type = string
+  type        = string
 }
 
 

@@ -56,11 +56,11 @@ module "Compute" {
   iam_wp_pf_arn         = module.IAM.iam_wp_pf_arn
   wp_app_sg_id          = module.security.wp_app_sg_id
   private_subnet_id_app = module.vpc.private_subnet_id_app
-  database_name               = module.database.database_name
+  database_name         = module.database.database_name
   db_user               = module.database.db_user
   db_password           = module.database.db_password
-  rds_endpoint           = module.database.rds_endpoint
-  domain_name = var.domain_name
+  rds_endpoint          = module.database.rds_endpoint
+  domain_name           = var.domain_name
 }
 
 # Loadbalancer module
