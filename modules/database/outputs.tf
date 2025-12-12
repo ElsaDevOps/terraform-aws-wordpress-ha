@@ -15,7 +15,7 @@ output "rds_id" {
 
 
 
-output "db_user" {
+output "db_username" {
   description = "Database master username"
   value       = aws_db_instance.dev_db.username
   sensitive   = true

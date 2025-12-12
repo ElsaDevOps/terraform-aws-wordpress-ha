@@ -46,7 +46,7 @@ resource "aws_launch_template" "wordpress" {
   user_data = base64encode(templatefile("${path.module}/user_data.yaml", {
     efs_id      = var.wp_efs_id
     db_name     = var.database_name
-    db_user     = var.db_user
+    db_user     = var.db_username
     db_password = var.db_password
     db_host     = var.rds_endpoint
     domain_name = var.domain_name

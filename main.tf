@@ -26,7 +26,7 @@ module "database" {
   project_name         = local.project_name
   db_instance_class    = local.database_config.instance_class
   db_allocated_storage = local.database_config.allocated_storage
-  db_name              = local.database_config.name
+  database_name        = local.database_config.name
 }
 
 # IAM module
@@ -57,10 +57,11 @@ module "Compute" {
   wp_app_sg_id          = module.security.wp_app_sg_id
   private_subnet_id_app = module.vpc.private_subnet_id_app
   database_name         = module.database.database_name
-  db_user               = module.database.db_user
+  db_username           = module.database.db_username
   db_password           = module.database.db_password
   rds_endpoint          = module.database.rds_endpoint
   domain_name           = var.domain_name
+
 }
 
 # Loadbalancer module

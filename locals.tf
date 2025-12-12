@@ -13,7 +13,7 @@ locals {
     username          = var.db_username
     instance_class    = var.db_instance_class
     allocated_storage = var.db_allocated_storage
-    name              = var.db_name
+    name              = var.database_name
   }
 
   # Compute configuration

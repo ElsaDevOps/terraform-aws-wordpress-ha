@@ -10,7 +10,7 @@ variable "db_instance_class" {
   default     = "db.t3.micro"
 }
 
-variable "db_name" {
+variable "database_name" {
   description = "The name of the database to create"
   type        = string
   default     = "wordpress" # Simple, valid database name

@@ -29,7 +29,7 @@ resource "aws_db_instance" "dev_db" {
   storage_type      = "gp2"
 
   # --- Database Credentials & Naming ---
-  db_name  = var.db_name
+  db_name = var.database_name
   username = var.db_username
   password = data.aws_ssm_parameter.db_password.value
 
@@ -54,3 +54,5 @@ data "aws_ssm_parameter" "db_password" {
   name            = "/wordpress/aurora/master-password"
   with_decryption = true
 }
+
+

@@ -69,7 +69,7 @@ variable "db_allocated_storage" {
 
 
 # Add this one
-variable "db_name" {
+variable "database_name" {
   description = "The name of the database to create"
   type        = string
   default     = "wordpress" # Simple, valid database name

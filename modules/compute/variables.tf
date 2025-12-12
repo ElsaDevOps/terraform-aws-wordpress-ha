@@ -44,7 +44,7 @@ variable "database_name" {
   type        = string
 }
 
-variable "db_user" {
+variable "db_username" {
   description = "WordPress database username"
   type        = string
 }
