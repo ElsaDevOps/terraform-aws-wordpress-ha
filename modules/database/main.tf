@@ -22,31 +22,31 @@ resource "aws_db_subnet_group" "rds" {
 resource "aws_db_instance" "dev_db" {
   identifier = "wordpress-dev-db"
 
-  # --- Instance & Engine Configuration ---
+
   engine         = "mysql"
   engine_version = "8.0"
   instance_class = var.db_instance_class
 
-  # --- Storage Configuration ---
+
   allocated_storage = var.db_allocated_storage
   storage_type      = "gp2"
 
-  # --- Database Credentials & Naming ---
+
   db_name  = var.database_name
   username = var.db_username
   password = data.aws_ssm_parameter.db_password.value
 
-  # --- Network & Security ---
+
   db_subnet_group_name       = aws_db_subnet_group.rds.name
   vpc_security_group_ids     = [var.rds_sg_id]
   publicly_accessible        = false
-  multi_az                   = true
-  storage_encrypted          = true
-  backup_retention_period    = 7
+  multi_az                   = true # Multi-AZ for high availability
+  storage_encrypted          = true # Encryption at rest using AWS-managed key (free)
+  backup_retention_period    = 7    # 7-day backup retention for point-in-time recovery
   auto_minor_version_upgrade = true
   copy_tags_to_snapshot      = true
 
-  # --- Backup & Safety (Dev-Specific Settings) ---
+
 
 
   skip_final_snapshot = true

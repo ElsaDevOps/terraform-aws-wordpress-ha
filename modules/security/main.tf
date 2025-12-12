@@ -9,24 +9,6 @@ terraform {
 }
 
 
-resource "aws_security_group" "ec2-compute" {
-  name        = "wordpress-ec2-compute-sg"
-  description = "Allow traffic to and from the WordPress EC2 instances"
-  vpc_id      = var.vpc_id
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name        = "${var.project_name}-ec2-sg"
-    Project     = var.project_name
-    Environment = "dev"
-    ManagedBy   = "Terraform"
-  }
-}
 
 resource "aws_security_group_rule" "allow_alb_traffic_http" {
   description              = "Allow HTTP traffic from ALB to EC2"
@@ -150,7 +132,7 @@ resource "aws_security_group" "wp_alb_sg" {
   vpc_id      = var.vpc_id
 
 
-  # EGRESS: Allow All Outbound
+
   egress {
     from_port   = 0
     to_port     = 0

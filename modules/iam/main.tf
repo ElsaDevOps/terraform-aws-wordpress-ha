@@ -7,7 +7,9 @@ terraform {
     }
   }
 }
-# IAM USER
+
+
+# EC2 role for SSM access (Session Manager instead of SSH)
 resource "aws_iam_role" "ec2_role" {
   name = "test_role"
 

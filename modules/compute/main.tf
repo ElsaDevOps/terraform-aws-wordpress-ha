@@ -15,16 +15,16 @@ terraform {
 
 
 
-# Launch template
 
 
+# IMDSv2 required for security - prevents SSRF attacks
 
 resource "aws_launch_template" "wordpress" {
   name_prefix   = "wordpress-lt-"
   image_id      = var.wordpress_ami_id
   instance_type = var.instance_type
 
-  # 1. IDENTITY: Who is this server?
+
   iam_instance_profile {
     arn = var.iam_wp_pf_arn
   }
@@ -38,11 +38,10 @@ resource "aws_launch_template" "wordpress" {
   }
 
 
-  # 3. ACCESS: How do we debug it?
+
   key_name = var.ec2_key_name
 
-  # 4. BRAINS: The Cloud-Init Configuration
-  # We inject the EFS ID directly from the resource in persistence.tf
+
   user_data = base64encode(templatefile("${path.module}/user_data.yaml", {
     efs_id      = var.wp_efs_id
     db_name     = var.database_name
@@ -50,7 +49,7 @@ resource "aws_launch_template" "wordpress" {
     db_password = var.db_password
     db_host     = var.rds_endpoint
     domain_name = var.domain_name
-    # Use simple placeholders for keys
+
     auth_key         = "${random_id.wp_keys.hex}-auth"
     secure_auth_key  = "${random_id.wp_keys.hex}-secure"
     logged_in_key    = "${random_id.wp_keys.hex}-logged"
@@ -84,7 +83,7 @@ resource "aws_launch_template" "wordpress" {
 }
 
 resource "random_id" "wp_keys" {
-  byte_length = 32
+  byte_length = 32 # WordPress keys generated per deployment for security
 }
 resource "aws_autoscaling_group" "wordpress" {
   name                = "wordpress-asg"
@@ -92,7 +91,7 @@ resource "aws_autoscaling_group" "wordpress" {
   desired_capacity    = 2
   max_size            = 3
   min_size            = 1
-  health_check_type   = "ELB"
+  health_check_type   = "ELB" # ELB health checks for faster instance replacement
 
   launch_template {
     id      = aws_launch_template.wordpress.id

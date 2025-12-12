@@ -3,39 +3,36 @@ terraform.tfvars
 .terraform
 .env
 .DS_Store
-# Local Terraform directories
+
 .terraform/
 
-# .tfstate files
+
 *.tfstate
 *.tfstate.backup
 terraform.tfstate.1764782317.backup
 
-# Crash log files
 crash.log
 crash.*.log
 
-# Exclude all .tfvars files to prevent accidental credential exposure.
-# Only commit variable definitions in .tf files.
+
 *.tfvars
 *.tfvars.json
 
-# Ignore override files as they are usually environment-specific
+
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Include tfplan files to ignore the plan output of command, IDEs
+
 *.tfplan
 
-# Ignore CLI configuration files
+
 *.terraformrc
 terraform.rc
 
 
 
-#Ignore volume
 /volume/
 
 

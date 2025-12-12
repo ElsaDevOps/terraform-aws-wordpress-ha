@@ -7,7 +7,7 @@ terraform {
     }
   }
 }
-resource "aws_efs_file_system" "wp_efs" {
+resource "aws_efs_file_system" "wp_efs" { # EFS for shared WordPress files across instances (wp-content, uploads)
   creation_token = "wordpress-efs-token"
   encrypted      = true
 

@@ -1,4 +1,4 @@
-# VPC Module
+
 module "vpc" {
   source = "./modules/vpc"
 
@@ -9,14 +9,14 @@ module "vpc" {
   availability_zones       = local.network_config.availability_zones
 }
 
-# Security module
+
 module "security" {
   source = "./modules/security"
 
   vpc_id = module.vpc.vpc_id
 }
 
-# Database module
+
 module "database" {
   source = "./modules/database"
 
@@ -29,24 +29,21 @@ module "database" {
   database_name        = local.database_config.name
 }
 
-# IAM module
+
 module "IAM" {
   source = "./modules/iam"
 }
 
-# AMI module
 module "AMI" {
   source = "./modules/ami"
 }
 
-# Storage Module
 module "storage" {
   source     = "./modules/storage"
   subnet_ids = module.vpc.private_subnet_id_data
   efs_sg_id  = module.security.efs_sg_id
 }
 
-# Compute Module
 module "Compute" {
   source = "./modules/compute"
 
@@ -65,7 +62,7 @@ module "Compute" {
 
 }
 
-# Loadbalancer module
+
 module "Loadbalancer" {
   source               = "./modules/loadbalancer"
   wp_alb_sg_id         = module.security.wp_alb_sg_id

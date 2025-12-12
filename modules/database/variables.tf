@@ -13,13 +13,13 @@ variable "db_instance_class" {
 variable "database_name" {
   description = "The name of the database to create"
   type        = string
-  default     = "wordpress" # Simple, valid database name
+  default     = "wordpress"
 }
 
 variable "project_name" {
   description = "Name of the project, used for tagging and naming resources"
   type        = string
-  default     = "wordpress" # or whatever you want to call your project
+  default     = "wordpress"
 }
 
 variable "db_username" {

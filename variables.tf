@@ -22,18 +22,13 @@ variable "cidr_public_subnet_web" {
 }
 
 
-# tflint-ignore: terraform_unused_declarations
 variable "instance_type" {
   type        = string
   description = "instance type"
   default     = "t2.micro"
 }
 
-# variable "region" {
-#   type        = string
-#   description = "Aws region"
-#   default     = "eu-west-2"
-# }
+
 
 variable "availability_zones" {
   type        = list(string)
@@ -45,7 +40,7 @@ variable "availability_zones" {
 
 
 
-# tflint-ignore: terraform_unused_declarations
+
 variable "ec2_key_name" {
   description = "Emergency access key for ssh"
   type        = string
@@ -68,21 +63,21 @@ variable "db_allocated_storage" {
 
 
 
-# Add this one
+
 variable "database_name" {
   description = "The name of the database to create"
   type        = string
-  default     = "wordpress" # Simple, valid database name
+  default     = "wordpress"
 }
 
-# tflint-ignore: terraform_unused_declarations
+
 variable "project_name" {
   description = "Name of the project, used for tagging and naming resources"
   type        = string
   default     = "wordpress"
 }
 
-# tflint-ignore: terraform_unused_declarations
+
 variable "db_username" {
   description = "The master username for the database"
   type        = string
@@ -93,8 +88,3 @@ variable "domain_name" {
   description = "the domain name"
   type        = string
 }
-
-
-
-
-# tflint-ignore: terraform_unused_declarations

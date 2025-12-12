@@ -15,15 +15,8 @@ resource "aws_lb" "wp_alb" {
   security_groups            = [var.wp_alb_sg_id]
   subnets                    = values(var.public_subnet_id_web)
   idle_timeout               = 300
-  drop_invalid_header_fields = true
+  drop_invalid_header_fields = true # Drop invalid headers to prevent HTTP desync attacks
 
-  #   enable_deletion_protection = true
-
-  #   access_logs {
-  #     bucket  = aws_s3_bucket.lb_logs.id
-  #     prefix  = "wp-lb"
-  #     enabled = true
-  #   }
 
   tags = {
     Name        = "${var.project_name}-alb"
@@ -62,7 +55,7 @@ resource "aws_lb_target_group" "wp_alb_tg" {
 
 }
 
-
+# HTTP listener redirects to HTTPS - no unencrypted traffic
 resource "aws_lb_listener" "front_end" {
   load_balancer_arn = aws_lb.wp_alb.arn
   port              = "80"
@@ -98,6 +91,7 @@ resource "aws_lb_listener" "https" {
   }
 }
 
+# Redirect non-www to www (applied only to root domain)
 resource "aws_lb_listener_rule" "redirect_root_to_www" {
   listener_arn = aws_lb_listener.https.arn
   priority     = 1
@@ -172,7 +166,7 @@ resource "aws_acm_certificate_validation" "cert" {
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }
 
-# Existing www record (you'll import this)
+
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.main.zone_id
   name    = var.domain_name
@@ -185,7 +179,6 @@ resource "aws_route53_record" "www" {
   }
 }
 
-# New root domain record (Terraform will create this)
 resource "aws_route53_record" "root" {
   zone_id = data.aws_route53_zone.main.zone_id
   name    = var.domain_name

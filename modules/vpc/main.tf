@@ -11,7 +11,7 @@ terraform {
 
 
 
-# Creating Custom VPC
+
 
 resource "aws_vpc" "my_vpc" {
   cidr_block           = var.cidr_blockvpc
@@ -26,10 +26,7 @@ resource "aws_vpc" "my_vpc" {
 }
 
 
-# # Create Public and Private Subnets
-
-# Public subnet web tier
-
+# Public subnets for ALB - needs internet access
 resource "aws_subnet" "public_subnet" {
   for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_public_subnet_web[i] }
   vpc_id                  = aws_vpc.my_vpc.id
@@ -48,8 +45,8 @@ resource "aws_subnet" "public_subnet" {
 
 
 
-# private subnet app tier
 
+# Private subnets for EC2 - access via NAT gateway
 resource "aws_subnet" "private_subnet_app" {
   for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_private_subnet_app[i] }
   vpc_id                  = aws_vpc.my_vpc.id
@@ -66,8 +63,7 @@ resource "aws_subnet" "private_subnet_app" {
 }
 
 
-
-#private subnet data tier
+# Data subnets for RDS - isolated, no internet access
 
 resource "aws_subnet" "private_subnet_data" {
   for_each                = { for i, availability_zone in var.availability_zones : availability_zone => var.cidr_private_subnet_data[i] }
@@ -85,7 +81,7 @@ resource "aws_subnet" "private_subnet_data" {
 }
 
 
-# # Internet Gateway
+
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.my_vpc.id
@@ -99,7 +95,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 
-# # NAT Gateway
+
 
 resource "aws_eip" "nat" {
   for_each = aws_subnet.public_subnet
@@ -114,7 +110,7 @@ resource "aws_eip" "nat" {
 }
 
 
-
+# NAT Gateway for private subnet outbound traffic (package updates, etc.)
 resource "aws_nat_gateway" "nat_gateway" {
   for_each      = aws_subnet.public_subnet
   allocation_id = aws_eip.nat[each.key].id
@@ -154,7 +150,7 @@ resource "aws_route" "public_default" {
 
 }
 
-# private app
+
 
 resource "aws_route_table" "private_route_table" {
   for_each = aws_subnet.private_subnet_app
