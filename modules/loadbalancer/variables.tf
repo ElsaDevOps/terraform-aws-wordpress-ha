@@ -20,3 +20,13 @@ variable "wp_asg_id" {
   description = "The ID of the asg"
   type        = string
 }
+
+variable "domain_name" {
+  description = "the domain name"
+  type        = string
+}
+
+variable "wildcard_domain"{
+  description = "the wildcard domain"
+  type = string
+}

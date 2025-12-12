@@ -1,0 +1,36 @@
+
+
+# ===================
+# Project Settings
+# ===================
+project_name = "my-wordpress"
+
+# ===================
+# AWS Settings
+# ===================
+availability_zones = ["eu-west-2a", "eu-west-2b"]
+wordpress_ami_id   = "ami-0123456789abcdef0"  # Amazon Linux 2023
+instance_type      = "t3.micro"
+ec2_key_name       = "your-key-pair-name"
+
+# ===================
+# Network CIDR Blocks
+# ===================
+cidr_blockvpc            = "10.0.0.0/16"
+cidr_public_subnet_web   = ["10.0.1.0/24", "10.0.2.0/24"]
+cidr_private_subnet_app  = ["10.0.10.0/24", "10.0.20.0/24"]
+cidr_private_subnet_data = ["10.0.100.0/24", "10.0.200.0/24"]
+
+# ===================
+# Domain
+# ===================
+domain_name = "www.example.com"
+
+# ===================
+# Database
+# ===================
+db_name              = "wordpress"
+db_username          = "admin"
+db_password          = "CHANGE_ME_USE_STRONG_PASSWORD"
+db_instance_class    = "db.t3.micro"
+db_allocated_storage = 20

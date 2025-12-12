@@ -30,7 +30,7 @@ override.tf.json
 *.tfplan
 
 # Ignore CLI configuration files
-.terraformrc
+*.terraformrc
 terraform.rc
 
 
@@ -40,7 +40,7 @@ terraform.rc
 
 
 .aws/
-.pem
-.key
+*.pem
+*.key
 !example.tfvars
 EOF

@@ -70,4 +70,6 @@ module "Loadbalancer" {
   vpc_id               = module.vpc.vpc_id
   public_subnet_id_web = module.vpc.public_subnet_id_web
   wp_asg_id            = module.Compute.wp_asg_id
+  domain_name = var.domain_name
+  wildcard_domain = local.wildcard_domain
 }

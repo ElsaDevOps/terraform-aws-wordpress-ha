@@ -102,7 +102,7 @@ resource "aws_lb_listener_rule" "redirect_root_to_www" {
     type = "redirect"
 
     redirect {
-      host        = "www.elsapress.com"
+      host        = var.domain_name
       path        = "/#{path}"
       query       = "#{query}"
       port        = "#{port}"
@@ -113,7 +113,7 @@ resource "aws_lb_listener_rule" "redirect_root_to_www" {
 
   condition {
     host_header {
-      values = ["elsapress.com"]
+      values = [var.domain_name]
     }
   }
 }
@@ -126,11 +126,11 @@ resource "aws_autoscaling_attachment" "example" {
 
 
 resource "aws_acm_certificate" "cert" {
-  domain_name       = "elsapress.com"
+  domain_name       = var.domain_name
   validation_method = "DNS"
 
   subject_alternative_names = [
-    "*.elsapress.com"
+    var.wildcard_domain
 
   ]
 
@@ -142,7 +142,7 @@ resource "aws_acm_certificate" "cert" {
 }
 
 data "aws_route53_zone" "main" {
-  name         = "elsapress.com"
+  name         = var.domain_name
   private_zone = false
 }
 
@@ -171,7 +171,7 @@ resource "aws_acm_certificate_validation" "cert" {
 # Existing www record (you'll import this)
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.main.zone_id
-  name    = "www.elsapress.com"
+  name    = var.domain_name
   type    = "A"
 
   alias {
@@ -184,7 +184,7 @@ resource "aws_route53_record" "www" {
 # New root domain record (Terraform will create this)
 resource "aws_route53_record" "root" {
   zone_id = data.aws_route53_zone.main.zone_id
-  name    = "elsapress.com"
+  name    = var.domain_name
   type    = "A"
 
   alias {
