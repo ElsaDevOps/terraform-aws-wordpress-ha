@@ -59,6 +59,7 @@ module "Compute" {
   rds_endpoint          = module.database.rds_endpoint
   domain_name           = var.domain_name
   project_name          = var.project_name
+  instance_type         = var.instance_type
 
 }
 
