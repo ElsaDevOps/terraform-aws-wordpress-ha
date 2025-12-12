@@ -172,7 +172,7 @@ resource "aws_route" "private_default" {
 }
 
 
-# private data
+
 resource "aws_route_table" "private_data" {
   vpc_id = aws_vpc.my_vpc.id
   tags = {
@@ -183,7 +183,7 @@ resource "aws_route_table" "private_data" {
   }
 }
 
-# # Route table associations to subnets
+
 
 resource "aws_route_table_association" "public" {
   for_each       = aws_subnet.public_subnet
