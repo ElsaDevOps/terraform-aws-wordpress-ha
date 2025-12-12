@@ -21,7 +21,10 @@ resource "aws_security_group" "ec2-compute" {
   }
 
   tags = {
-    Name = "WordPress EC2 SG"
+    Name        = "${var.project_name}-ec2-sg"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -49,7 +52,10 @@ resource "aws_security_group" "rds" {
   }
 
   tags = {
-    Name = "${var.project_name}-rds-sg"
+    Name        = "${var.project_name}-rds-sg"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -82,7 +88,10 @@ resource "aws_security_group" "wp_app_sg" {
 
 
   tags = {
-    Name = "wordpress-app-sg"
+    Name        = "${var.project_name}-app-sg"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 
 }
@@ -126,7 +135,10 @@ resource "aws_security_group" "efs_sg" {
 
   }
   tags = {
-    Name = "efs-sg"
+    Name        = "${var.project_name}-efs-sg"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 
 
@@ -147,7 +159,10 @@ resource "aws_security_group" "wp_alb_sg" {
   }
 
   tags = {
-    Name = "WordPress ALB SG"
+    Name        = "${var.project_name}-alb-sg"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 

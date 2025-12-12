@@ -26,7 +26,10 @@ resource "aws_lb" "wp_alb" {
   #   }
 
   tags = {
-    Environment = "development"
+    Name        = "${var.project_name}-alb"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 

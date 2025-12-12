@@ -12,7 +12,10 @@ resource "aws_db_subnet_group" "rds" {
   subnet_ids = values(var.subnet_ids)
 
   tags = {
-    Name = "My DB subnet group"
+    Name        = "${var.project_name}-db-subnet-group"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -50,7 +53,10 @@ resource "aws_db_instance" "dev_db" {
   deletion_protection = true
 
   tags = {
-    Name = "${var.project_name}-dev-db"
+    Name        = "${var.project_name}-database"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 

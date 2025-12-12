@@ -28,7 +28,10 @@ resource "aws_iam_role" "ec2_role" {
   })
 
   tags = {
-    tag-key = "tag-value"
+    Name        = "${var.project_name}-ec2-role"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 

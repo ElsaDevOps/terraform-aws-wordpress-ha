@@ -71,7 +71,10 @@ resource "aws_launch_template" "wordpress" {
   tag_specifications {
     resource_type = "instance"
     tags = {
-      Name = "WordPress-Instance"
+      Name        = "${var.project_name}-wordpress-instance"
+      Project     = var.project_name
+      Environment = "dev"
+      ManagedBy   = "Terraform"
     }
   }
 
@@ -103,9 +106,5 @@ resource "aws_autoscaling_group" "wordpress" {
     }
   }
 
-  tag {
-    key                 = "Name"
-    value               = "WordPress-Instance"
-    propagate_at_launch = true
-  }
+
 }

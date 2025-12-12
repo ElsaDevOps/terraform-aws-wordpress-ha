@@ -18,7 +18,10 @@ resource "aws_vpc" "my_vpc" {
   instance_tenancy     = "default"
   enable_dns_hostnames = true
   tags = {
-    Name = "my_vpc"
+    Name        = "${var.project_name}-vpc"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -35,7 +38,10 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Public subnet web"
+    Name        = "${var.project_name}-public-subnet"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -52,7 +58,10 @@ resource "aws_subnet" "private_subnet_app" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "Private subnet app"
+    Name        = "${var.project_name}-private-subnet-app"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -68,7 +77,10 @@ resource "aws_subnet" "private_subnet_data" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "Private subnet data"
+    Name        = "${var.project_name}-private-subnet-data"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -79,7 +91,10 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.my_vpc.id
 
   tags = {
-    Name = "Internet Gateway"
+    Name        = "${var.project_name}-igw"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -91,7 +106,10 @@ resource "aws_eip" "nat" {
   domain   = "vpc"
 
   tags = {
-    name = "eip-nat-${each.key}"
+    Name        = "${var.project_name}-nat-eip"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -103,7 +121,10 @@ resource "aws_nat_gateway" "nat_gateway" {
   subnet_id     = each.value.id
 
   tags = {
-    Name = "nat-$[each.key]"
+    Name        = "${var.project_name}-nat-gateway"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -114,7 +135,10 @@ resource "aws_nat_gateway" "nat_gateway" {
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.my_vpc.id
   tags = {
-    Name = "Public route table"
+    Name        = "${var.project_name}-public-rt"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -136,7 +160,10 @@ resource "aws_route_table" "private_route_table" {
   for_each = aws_subnet.private_subnet_app
   vpc_id   = aws_vpc.my_vpc.id
   tags = {
-    Name = "Private route table ${each.key}"
+    Name        = "${var.project_name}-private-rt-app"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
@@ -153,7 +180,10 @@ resource "aws_route" "private_default" {
 resource "aws_route_table" "private_data" {
   vpc_id = aws_vpc.my_vpc.id
   tags = {
-    Name = "Private route table data"
+    Name        = "${var.project_name}-private-rt-data"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 

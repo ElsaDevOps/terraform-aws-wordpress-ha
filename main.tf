@@ -61,6 +61,7 @@ module "Compute" {
   db_password           = module.database.db_password
   rds_endpoint          = module.database.rds_endpoint
   domain_name           = var.domain_name
+  project_name          = var.project_name
 
 }
 

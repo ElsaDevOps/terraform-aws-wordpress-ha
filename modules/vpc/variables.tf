@@ -26,3 +26,9 @@ variable "availability_zones" {
   description = "The availability zones to deploy to"
   default     = ["eu-west-2a", "eu-west-2b"]
 }
+
+variable "project_name" {
+  description = "Name of the project, used for tagging and naming resources"
+  type        = string
+  default     = "wordpress" # or whatever you want to call your project
+}

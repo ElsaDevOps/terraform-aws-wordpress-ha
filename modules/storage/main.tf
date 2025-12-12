@@ -12,7 +12,10 @@ resource "aws_efs_file_system" "wp_efs" {
   encrypted      = true
 
   tags = {
-    Name = "${var.project_name}-efs"
+    Name        = "${var.project_name}-efs"
+    Project     = var.project_name
+    Environment = "dev"
+    ManagedBy   = "Terraform"
   }
 }
 
