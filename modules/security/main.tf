@@ -26,6 +26,7 @@ resource "aws_security_group" "ec2-compute" {
 }
 
 resource "aws_security_group_rule" "allow_alb_traffic_http" {
+  description              = "Allow HTTP traffic from ALB to EC2"
   type                     = "ingress"
   from_port                = 80
   to_port                  = 80
@@ -37,8 +38,8 @@ resource "aws_security_group_rule" "allow_alb_traffic_http" {
 
 
 resource "aws_security_group" "rds" {
-  name        = "${var.project_name}-rds-sg"
   description = "Security group for RDS database"
+  name        = "${var.project_name}-rds-sg"
   vpc_id      = var.vpc_id
   egress {
     from_port   = 0
@@ -53,6 +54,7 @@ resource "aws_security_group" "rds" {
 }
 
 resource "aws_security_group_rule" "allow_MySQL" {
+  description              = "Allow MySQL traffic from compute instances"
   type                     = "ingress"
   from_port                = 3306
   to_port                  = 3306
@@ -86,6 +88,7 @@ resource "aws_security_group" "wp_app_sg" {
 }
 
 resource "aws_security_group_rule" "allow_egress_rds" {
+  description              = "Allow egress traffic from RDS"
   type                     = "egress"
   from_port                = 3306
   to_port                  = 3306
@@ -95,6 +98,7 @@ resource "aws_security_group_rule" "allow_egress_rds" {
 }
 
 resource "aws_security_group_rule" "allow_NFS" {
+  description              = "Allow NFS traffic from compute to EFS"
   type                     = "ingress"
   from_port                = 2049
   to_port                  = 2049
@@ -106,8 +110,8 @@ resource "aws_security_group_rule" "allow_NFS" {
 # EFS Security group
 
 resource "aws_security_group" "efs_sg" {
+  description = "Security group for EFS file system"
   name        = "efs-sg"
-  description = "Allow NFS access"
   vpc_id      = var.vpc_id
 
 
@@ -130,7 +134,7 @@ resource "aws_security_group" "efs_sg" {
 
 resource "aws_security_group" "wp_alb_sg" {
   name        = "wordpress-alb-sg"
-  description = "Allow the ALB to recieve ingress traffic"
+  description = "Security group for WordPress ALB"
   vpc_id      = var.vpc_id
 
 
@@ -149,6 +153,7 @@ resource "aws_security_group" "wp_alb_sg" {
 
 
 resource "aws_security_group_rule" "allow_http_traffic" {
+  description       = "Allow HTTP traffic from internet to ALB"
   type              = "ingress"
   from_port         = 80
   to_port           = 80
@@ -158,6 +163,7 @@ resource "aws_security_group_rule" "allow_http_traffic" {
 }
 
 resource "aws_security_group_rule" "allow_https_traffic" {
+  description       = "Allow HTTPS traffic from internet to ALB"
   type              = "ingress"
   from_port         = 443
   to_port           = 443

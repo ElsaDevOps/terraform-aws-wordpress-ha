@@ -9,12 +9,13 @@ terraform {
 }
 
 resource "aws_lb" "wp_alb" {
-  name               = "wp-alb-tf"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [var.wp_alb_sg_id]
-  subnets            = values(var.public_subnet_id_web)
-  idle_timeout       = 300
+  name                       = "wp-alb-tf"
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [var.wp_alb_sg_id]
+  subnets                    = values(var.public_subnet_id_web)
+  idle_timeout               = 300
+  drop_invalid_header_fields = true
 
   #   enable_deletion_protection = true
 

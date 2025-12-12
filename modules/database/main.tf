@@ -29,21 +29,25 @@ resource "aws_db_instance" "dev_db" {
   storage_type      = "gp2"
 
   # --- Database Credentials & Naming ---
-  db_name = var.database_name
+  db_name  = var.database_name
   username = var.db_username
   password = data.aws_ssm_parameter.db_password.value
 
   # --- Network & Security ---
-  db_subnet_group_name   = aws_db_subnet_group.rds.name
-  vpc_security_group_ids = [var.rds_sg_id]
-  publicly_accessible    = false
-  multi_az               = true
+  db_subnet_group_name       = aws_db_subnet_group.rds.name
+  vpc_security_group_ids     = [var.rds_sg_id]
+  publicly_accessible        = false
+  multi_az                   = true
+  storage_encrypted          = true
+  backup_retention_period    = 7
+  auto_minor_version_upgrade = true
+  copy_tags_to_snapshot      = true
 
   # --- Backup & Safety (Dev-Specific Settings) ---
 
-  backup_retention_period = 0
-  skip_final_snapshot     = true
-  deletion_protection     = false
+
+  skip_final_snapshot = true
+  deletion_protection = true
 
   tags = {
     Name = "${var.project_name}-dev-db"
@@ -54,5 +58,3 @@ data "aws_ssm_parameter" "db_password" {
   name            = "/wordpress/aurora/master-password"
   with_decryption = true
 }
-
-

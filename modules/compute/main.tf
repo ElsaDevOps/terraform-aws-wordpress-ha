@@ -62,7 +62,11 @@ resource "aws_launch_template" "wordpress" {
   }))
 
 
-
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
 
   tag_specifications {
     resource_type = "instance"
@@ -85,6 +89,7 @@ resource "aws_autoscaling_group" "wordpress" {
   desired_capacity    = 2
   max_size            = 3
   min_size            = 1
+  health_check_type   = "ELB"
 
   launch_template {
     id      = aws_launch_template.wordpress.id

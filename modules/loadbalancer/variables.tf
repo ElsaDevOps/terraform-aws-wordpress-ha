@@ -26,7 +26,7 @@ variable "domain_name" {
   type        = string
 }
 
-variable "wildcard_domain"{
+variable "wildcard_domain" {
   description = "the wildcard domain"
-  type = string
+  type        = string
 }
