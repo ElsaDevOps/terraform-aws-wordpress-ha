@@ -168,9 +168,10 @@ resource "aws_acm_certificate_validation" "cert" {
 
 
 resource "aws_route53_record" "www" {
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = var.domain_name
-  type    = "A"
+  zone_id         = data.aws_route53_zone.main.zone_id
+  name            = "www.${var.domain_name}"
+  type            = "A"
+  allow_overwrite = true
 
   alias {
     name                   = aws_lb.wp_alb.dns_name
@@ -180,9 +181,10 @@ resource "aws_route53_record" "www" {
 }
 
 resource "aws_route53_record" "root" {
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = var.domain_name
-  type    = "A"
+  zone_id         = data.aws_route53_zone.main.zone_id
+  name            = var.domain_name
+  type            = "A"
+  allow_overwrite = true
 
   alias {
     name                   = aws_lb.wp_alb.dns_name

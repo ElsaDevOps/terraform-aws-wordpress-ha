@@ -23,6 +23,6 @@ locals {
 
 
   root_domain     = replace(var.domain_name, "www", "")
-  wildcard_domain = "*${local.root_domain}"
+  wildcard_domain = "*.${local.root_domain}"
   project_name    = var.project_name
 }

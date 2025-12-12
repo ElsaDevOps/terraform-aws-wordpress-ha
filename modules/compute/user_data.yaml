@@ -31,6 +31,7 @@ runcmd:
   - [ systemctl, start, php-fpm ]
   - [ systemctl, start, httpd ]
 
+
   #    Smart WordPress Installation (Idempotent)
   #    We write a small script block here. It checks if the shared EFS drive
   #    is empty. If it is, we install WordPress. If it has files (because
@@ -62,14 +63,14 @@ runcmd:
         $_SERVER['HTTPS'] = 'on';
     }
 
-    define('COOKIE_DOMAIN', '${domain_name}');
+    define('COOKIE_DOMAIN', 'www.${domain_name}');
     define('ADMIN_COOKIE_PATH', '/');
     define('COOKIEPATH', '/');
     define('SITECOOKIEPATH', '/');
     define('FORCE_SSL_ADMIN', true);
 
-    define('WP_HOME', 'https://${domain_name}');
-    define('WP_SITEURL', 'https://${domain_name}');
+    define('WP_HOME', 'https://www.${domain_name}');
+    define('WP_SITEURL', 'https://www.${domain_name}');
     define('DB_NAME', '${db_name}');
     define('DB_USER', '${db_user}');
     define('DB_PASSWORD', '${db_password}');
